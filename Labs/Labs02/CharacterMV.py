@@ -35,6 +35,9 @@ class Eri:
             self.y -= (self.Jump_frames - 7) * 4
             if self.Jump_frames < 14:
                 self.Jump_frames += 1
+        if self.y <= 150:
+            self.y = 150
+            self.Jump = False
 
     def handle_left_run(self):
         self.x -= 10
@@ -46,20 +49,20 @@ class Eri:
     def handle_left_stand(self):
         if self.frame == 4:
             self.stand_frames = (self.stand_frames + 1) % 4
-        if self.x > 610 and self.Open_Next_Map is True:
+        if self.x > 300 and self.Open_Next_Map is True:
             self.x -= 10
-            self.MapX += 10
+            self.MapX += 12
 
     def handle_right_run(self):
         self.run_frames = (self.run_frames + 1) % 12
         if self.x >= 760 and self.Open_Next_Map is False:
             self.x = 760
-        elif self.x > 460 and self.Open_Next_Map is True:
+        elif self.x > 300 and self.Open_Next_Map is True:
             self.x -= 10
-            self.MapX += 10
-        elif self.x >= 450 and self.Open_Next_Map is True:
-            self.x = 450
-            self.MapX += 10
+            self.MapX += 12
+        elif self.x >= 300 and self.Open_Next_Map is True:
+            self.x = 300
+            self.MapX += 12
         else:
             self.x += 10
 
@@ -68,9 +71,9 @@ class Eri:
             if self.stand_frames < 3:
                 self.stand_frames += 1
             self.stand_frames = (self.stand_frames + 1) % 8
-        if self.x > 610 and self.Open_Next_Map is True:
+        if self.x > 300 and self.Open_Next_Map is True:
             self.x -= 10
-            self.MapX += 10
+            self.MapX += 12
 
     handle_state = {
         LEFT_RUN: handle_left_run,
@@ -187,7 +190,7 @@ def main():
 
     global boy
     global Open_next_Map
-
+    BackGround = 0
     Open_next_Map = False
     boy = Eri()
 
@@ -198,10 +201,13 @@ def main():
 
     while running:
         handle_events()
-
         boy.update()
+        BackGround = boy.MapX/4
 
         clear_canvas()
+        Mission01_Map.clip_draw(3300, 843, 800, 300, 400, 300)
+        Mission01_Map.clip_draw(3300, 843, 800, 300, 400, 450)
+        Mission01_Map.clip_draw(boy.MapX, 843, 800, 300, 400, 250)
         Mission01_Map.clip_draw(boy.MapX, 1743, 800, 600, 400, 300)
         boy.draw()
         update_canvas()
